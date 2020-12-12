@@ -12,10 +12,10 @@ author = "Balaji Ravichandran"
 description = "Blog to share my learnings"
 
 ## Set one of:
-# gravatar = "soho@example.com"
+# gravatar = "bala@balajiravichandran.com"
 profilePicture = "images/profile.jpg"
 
-copyright = "Author Name"
+copyright = "Balaji Ravichandran"
 license = "CC BY-SA 4.0"
 licenseURL = "https://creativecommons.org/licenses/by-sa/4.0"
 
