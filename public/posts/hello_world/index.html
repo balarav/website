@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="Hugo 0.79.0" />
 
-  <title>Hello world &middot; Balaji Ravichandran</title>
+  <title>Connecting php symfony with postgres &middot; Balaji Ravichandran</title>
 
   <meta name="description" content="" />
 
   
 
-<meta itemprop="name" content="Hello world">
-<meta itemprop="description" content="this is my first post in this blog (updated with git)">
+<meta itemprop="name" content="Connecting php symfony with postgres">
+<meta itemprop="description" content="Steps  Enable ORM(doctrine) in symfony Configure symfony to connect with postgres Troubleshoot Errors  Enable Doctrine ORM  Add doctrine package to our project  composer require doctrine/doctrine-bundle   Configure symfony to connect with postgres.">
 <meta itemprop="datePublished" content="2020-12-11T19:21:39+05:30" />
 <meta itemprop="dateModified" content="2020-12-11T19:21:39+05:30" />
-<meta itemprop="wordCount" content="11">
+<meta itemprop="wordCount" content="133">
 
 
 
@@ -23,12 +23,12 @@
 
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Hello world"/>
-<meta name="twitter:description" content="this is my first post in this blog (updated with git)"/>
+<meta name="twitter:title" content="Connecting php symfony with postgres"/>
+<meta name="twitter:description" content="Steps  Enable ORM(doctrine) in symfony Configure symfony to connect with postgres Troubleshoot Errors  Enable Doctrine ORM  Add doctrine package to our project  composer require doctrine/doctrine-bundle   Configure symfony to connect with postgres."/>
 
 
-<meta property="og:title" content="Hello world" />
-<meta property="og:description" content="this is my first post in this blog (updated with git)" />
+<meta property="og:title" content="Connecting php symfony with postgres" />
+<meta property="og:description" content="Steps  Enable ORM(doctrine) in symfony Configure symfony to connect with postgres Troubleshoot Errors  Enable Doctrine ORM  Add doctrine package to our project  composer require doctrine/doctrine-bundle   Configure symfony to connect with postgres." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://balarav.github.io/posts/hello_world/" />
 <meta property="article:published_time" content="2020-12-11T19:21:39+05:30" />
@@ -67,7 +67,7 @@
       "@type": "WebPage",
       "@id": "https://balarav.github.io/posts/hello_world/#webpage",
       "url": "https://balarav.github.io/posts/hello_world/",
-      "name": "Hello world",
+      "name": "Connecting php symfony with postgres",
       "isPartOf": {
         "@id": "https://balarav.github.io#website"
       },
@@ -76,7 +76,7 @@
       },
       "datePublished": "2020-12-11T19:21:39+05:30",
       "dateModified": "2020-12-11T19:21:39+05:30",
-      "description": "this is my first post in this blog (updated with git)",
+      "description": "Steps  Enable ORM(doctrine) in symfony Configure symfony to connect with postgres Troubleshoot Errors  Enable Doctrine ORM  Add doctrine package to our project  composer require doctrine/doctrine-bundle   Configure symfony to connect with postgres.",
       "inLanguage": "en",
       "potentialAction": [
         {
@@ -95,7 +95,7 @@
       "mainEntityOfPage": {
         "@id": "https://balarav.github.io/posts/hello_world/#webpage"
       },
-      "headline": "Hello world",
+      "headline": "Connecting php symfony with postgres",
       "datePublished": "2020-12-11T19:21:39+05:30",
       "dateModified": "2020-12-11T19:21:39+05:30",
       "publisher": {
@@ -199,7 +199,7 @@
 
   <main class="content container">
   <div class="post">
-  <h1 class="title">Hello world</h1>
+  <h1 class="title">Connecting php symfony with postgres</h1>
   
 
   <div class="post-date">
@@ -207,7 +207,61 @@
   </div>
 
   <div>
-  <p>this is my first post in this blog (updated with git)</p>
+  <h3 id="steps">Steps</h3>
+<ul>
+<li>Enable ORM(doctrine) in symfony</li>
+<li>Configure symfony to connect with postgres</li>
+<li>Troubleshoot Errors</li>
+</ul>
+<h3 id="enable-doctrine-orm">Enable Doctrine ORM</h3>
+<ul>
+<li>Add doctrine package to our project
+<pre><code>    composer require doctrine/doctrine-bundle
+</code></pre></li>
+</ul>
+<h3 id="configure-symfony-to-connect-with-postgres">Configure symfony to connect with postgres.</h3>
+<ul>
+<li>Open config/packages/doctrine.yaml
+<pre><code>doctrine:
+dbal:
+    url: '%env(resolve:DATABASE_URL)%'
+    driver: 'pdo_pgsql'
+    charset: utf8
+</code></pre></li>
+<li>Edit .env file and provide your connection string
+<pre><code>DATABASE_URL=&quot;postgresql://&lt;pg_username&gt;:&lt;pg_password&gt;@127.0.0.1:5432/&lt;database_name&gt;?serverVersion=&lt;pg_serverVersion&gt;&amp;charset=utf8&quot;
+</code></pre></li>
+</ul>
+<h3 id="testing-the-connection">Testing the connection</h3>
+<ul>
+<li>Step 1: Creating a controller method.
+<pre><code>use Doctrine\DBAL\Driver\Connection;
+public function home(Connection $connection): Response {
+    $employees = $connection-&gt;fetchAll(&quot;select * from employees&quot;);
+    return $this-&gt;render(&quot;Home/home.html.twig&quot;, [
+        'employees' =&gt; $employees
+    ]);
+}
+</code></pre></li>
+<li>Step 2: Creating a view to show the data from controller. Create in templates/Home/home.html.twig.
+<pre><code>{% block body %}
+&lt;h3&gt; Employees &lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+{% for emp in employees %}
+    &lt;li&gt;{{ emp.username }}&lt;/li&gt;
+{% endfor %}
+&lt;/ul&gt;
+{% endblock %}
+</code></pre></li>
+<li>Step 3:  Result
+<pre><code>    Employees
+        - user
+        - admin
+        - user3
+        - user4
+</code></pre></li>
+</ul>
 
   </div>
 
@@ -216,37 +270,7 @@
 </div>
 
 
-  <div class="share-buttons">
-  <a class="twitter-share-button"
-     href="#"
-     title="Share on Twitter"
-     data-url="https://balarav.github.io/posts/hello_world/"
-     data-text="Hello world"><i class="fab fa-twitter"></i></a>
-
-  <a class="linkedin-share-button"
-     href="#"
-     title="Share on LinkedIn"
-     data-url="https://balarav.github.io/posts/hello_world/"
-     data-text="Hello world"><i class="fab fa-linkedin-in"></i></a>
-
-  <a class="facebook-share-button"
-     href="#"
-     title="Share on Facebook"
-     data-url="https://balarav.github.io/posts/hello_world/"
-     data-text="Hello world"><i class="fab fa-facebook"></i></a>
-
-  <a class="telegram-share-button"
-     href="#"
-     title="Share on Telegram"
-     data-url="https://balarav.github.io/posts/hello_world/"
-     data-text="Hello world"><i class="fab fa-telegram"></i></a>
-
-  <a class="pinterest-share-button"
-     href="#"
-     title="Share on Pinterest"
-     data-url="https://balarav.github.io/posts/hello_world/"
-     data-text="Hello world"><i class="fab fa-pinterest"></i></a>
-</div>
+  
 
 </div>
 
@@ -256,7 +280,7 @@
   <footer>
   <div>
     <p>
-      &copy; Author Name 2020
+      &copy; Balaji Ravichandran 2020
 
       &middot; <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank">CC BY-SA 4.0</a>
 
